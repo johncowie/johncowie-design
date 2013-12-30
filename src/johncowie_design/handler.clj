@@ -22,7 +22,7 @@
 (def palettes {
 :a (make-palette :#BC294E :#26103D :#C7C1C2 :#3D2B5C :#912049)
 :b (make-palette :#036564 :#E8DDCB :#E8DDCB :#033649 :#031634)
-:c (make-palette :#770000 :#ffffff :#ffffff :#000000 :#ff0000)
+:c (make-palette :#000077 :#ffffff :#ffffff :#000000 :#ff0000)
 })
 
 (def palette (:c palettes))
@@ -41,6 +41,7 @@
     {:color (:links palette)
      :text-decoration :none}
   ]
+ [:img {:margin 0 :border-width 0 :display :block}]
  [:code
     {:display :block
      :background-color :white
@@ -97,7 +98,7 @@
 
  [:.clear-fix {:clear :both}]))
 
-(defn base-template []
+(defn base-template [base-asset-url]
    (html5
    [:head
      [:title "Test Design"]
@@ -106,6 +107,7 @@
      [:style (generate-css)]
     ]
    [:body
+    [:img {:src (str base-asset-url "/img/banner.jpeg")}]
     [:div.nav
        [:div.container
          [:span {:style "color: #fff;"} "JOHN COWIE"]
@@ -130,5 +132,4 @@
   (handler/site app-routes))
 
 (defn -main [& args]
-  (spit (first args) (base-template))
-  )
+  (spit (first args) (base-template (second args))))
