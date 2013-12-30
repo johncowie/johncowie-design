@@ -7,7 +7,8 @@
             [garden.core :refer [css]]
             [garden.units :refer [px pc]]
             [garden.stylesheet :refer [at-media]]
-            [ring.util.response :refer [response content-type]]))
+            [ring.util.response :refer [response content-type]])
+  (:gen-class))
 
 (def width (px 600))
 
@@ -22,7 +23,7 @@
 (def palettes {
 :a (make-palette :#BC294E :#26103D :#C7C1C2 :#3D2B5C :#912049)
 :b (make-palette :#036564 :#E8DDCB :#E8DDCB :#033649 :#031634)
-:c (make-palette :#555555 :#ffffff :#ffffff :#000000 :#ff0000)
+:c (make-palette :#000000 :#ffffff :#ffffff :#000000 :#ff0000)
 })
 
 (def palette (:c palettes))
@@ -51,9 +52,12 @@
     {
      :display :block
      :width "100%"
-     :background-color (:post-text palette)
+     :background-color (:header-bg palette)
      }
-    [:ul {:margin 0 :padding 0}]
+    [:span {:float :left}]
+    [:ul {:margin 0
+          :padding 0
+          :float :right}]
     [:li {:display :inline-block
           :margin (px 5)}]
     [:a  {:color (:header-text palette)}
@@ -75,6 +79,7 @@
      :margin (px 0)
      :padding (px 5)
      :text-align :center
+     :border [[:solid (px 1) :black]]
      }
     (at-media {:max-width width}
               [:& {:font-size (px 50)}])
@@ -97,17 +102,17 @@
      [:title "Test Design"]
      ;(include-css "http://fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800")
      ;(include-css "js/google-code-prettify/prettify.css")
-     (include-css "/css")
+     [:style (generate-css)]
     ]
    [:body
-    [:div.header
-       [:span.container "JOHN COWIE"]]
     [:div.nav
        [:div.container
+         [:span "JOHN COWIE"]
          [:ul
            [:li [:a.blog-link {:href "http://blog.johncowie.co.uk"} "Blog"]]
            [:li [:a.reviews-link {:href "http://reviews.johncowie.co.uk"} "Reviews"]]
           ]
+         [:div.clear-fix]
         ]
      ]
     [:div.container.content
@@ -117,9 +122,12 @@
 
 (defroutes app-routes
   (GET "/" [] (base-template))
-  (GET "/css" [] (content-type (response (generate-css)) "text/css"))
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app
   (handler/site app-routes))
+
+(defn -main [& args]
+  (spit (first args) (base-template))
+  )
