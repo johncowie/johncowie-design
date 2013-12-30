@@ -110,7 +110,7 @@
        [:div.container
          [:span {:style "color: #fff;"} "JOHN COWIE"]
          [:ul
-           [:li [:a.blog-link {:href "http://johncowie.co.uk"} "Blog"]]
+           [:li [:a.blog-link {:href "http://blog.johncowie.co.uk"} "Blog"]]
            [:li [:a.books-link {:href "http://books.johncowie.co.uk"} "Books"]]
           ]
          [:div.clear-fix]
